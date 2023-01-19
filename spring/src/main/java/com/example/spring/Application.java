@@ -40,69 +40,8 @@ public class Application {
 		return String.format("hello ");
 	}
 
-	@PostMapping("/login")
-	public String login(@RequestBody Map<String, String> loginCredentials) throws JsonProcessingException {
-		System.out.println((loginCredentials));
-		/*for (String name : loginCredentials.keySet())
-			System.out.println("key: " + name);
+	
 
-		for (String url : loginCredentials.values())
-			System.out.println("value: " + url);*/
-
-		Iterator<Map.Entry<String, String>> itr = loginCredentials.entrySet().iterator();
-		while(itr.hasNext())
-		{
-			Map.Entry<String, String> entry = itr.next();
-			if(entry.getKey()== "username"){
-				int ret=checkLoginCred(entry.getValue());
-				return String.valueOf(ret);
-			}
-			/*System.out.println("Key = " + entry.getKey() +
-					", Value = " + entry.getValue());*/
-		}
-		//checkLoginCred("username");
-		return String.format(String.valueOf(loginCredentials));
-	}
-
-	public int checkLoginCred(String username)
-	{
-		Connection connection = null;
-		PreparedStatement psInsert = null;
-		PreparedStatement psCheckUserExists = null;
-		ResultSet resultSet = null;
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/loginsystem", "root", "Rubaiyat26");
-
-			/**
-			 * Here sonoo is database name, root is username and password
-			 * Statement stmt = con.createStatement();
-			 * ResultSet rs = stmt.executeQuery("select * from users where name = ?");
-			 **/
-			psCheckUserExists = connection.prepareStatement("SELECT * FROM users WHERE username = ?");
-			System.out.println(username);
-			psCheckUserExists.setString(1, username);
-			resultSet = psCheckUserExists.executeQuery();
-			/**/
-			if (resultSet.isBeforeFirst()) {
-				System.out.println("found");
-
-				while (resultSet.next()) {
-					System.out.println(resultSet.getInt(1) + "  " + resultSet.getString(2) + "  " + resultSet.getString(3));
-				}
-				connection.close();
-				return 1;
-			}
-			else {
-				System.out.println("no user");
-				return 0;
-
-			}
-		} catch (Exception e) {
-			System.out.println(e);
-		}
-		return 0;
-	}
 
 
 
